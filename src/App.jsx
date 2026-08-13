@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 
 const eventDate = new Date("2027-01-17T09:00:00+07:00");
@@ -22,7 +22,13 @@ export default function Home() {
   const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [copied, setCopied] = useState("");
   const [sent, setSent] = useState(false);
+  const [musicPlaying, setMusicPlaying] = useState(false);
+  const musicRef = useRef(null);
   const guestName = new URLSearchParams(window.location.search).get("to")?.trim() || "";
+
+  useEffect(() => {
+    if (musicRef.current) musicRef.current.volume = 0.05;
+  }, []);
 
   useEffect(() => {
     const tick = () => {
@@ -33,8 +39,21 @@ export default function Home() {
   }, []);
 
   const copy = (value, label) => { navigator.clipboard?.writeText(value); setCopied(label); setTimeout(() => setCopied(""), 1800); };
+  const openInvitation = () => {
+    setOpened(true);
+    musicRef.current?.play().then(() => setMusicPlaying(true)).catch(() => setMusicPlaying(false));
+  };
+  const toggleMusic = () => {
+    if (musicRef.current?.paused) {
+      musicRef.current.play().then(() => setMusicPlaying(true)).catch(() => setMusicPlaying(false));
+    } else {
+      musicRef.current?.pause();
+      setMusicPlaying(false);
+    }
+  };
 
   return <main>
+    <audio ref={musicRef} src="/audio/background.mp3" loop preload="auto" />
     {!opened && <section className="cover">
       <div className="cover-inner">
         <p className="aksara">ꦲꦸꦤ꧀ꦢꦔꦤ꧀</p>
@@ -47,11 +66,15 @@ export default function Home() {
         <Ornament />
         <p className="date">17 • 01 • 2027</p>
         <div className="guest"><small>Kepada Yth.</small><strong>{guestName || "Bapak/Ibu/Saudara/i"}</strong><span>di tempat</span></div>
-        <button className="primary" onClick={() => setOpened(true)}><Icon name="mail"/> Buka Undangan</button>
+        <button className="primary" onClick={openInvitation}><Icon name="mail"/> Buka Undangan</button>
       </div>
     </section>}
 
     <div className={opened ? "site visible" : "site"}>
+      <button className={`music-toggle ${musicPlaying ? "is-playing" : ""}`} type="button" onClick={toggleMusic} aria-label={musicPlaying ? "Jeda musik" : "Putar musik"} title={musicPlaying ? "Jeda musik" : "Putar musik"}>
+        <span className="vinyl-record" aria-hidden="true"><span className="vinyl-label"><Icon name="music"/></span></span>
+        <span className="music-status">{musicPlaying ? "Musik aktif" : "Putar musik"}</span>
+      </button>
       <header className="hero section-pad">
         <nav><a href="#home" className="brand">A<span>&amp;</span>F</a><div><a href="#mempelai">Mempelai</a><a href="#acara">Acara</a><a href="#kisah">Kisah</a><a href="#rsvp">RSVP</a></div></nav>
         <div className="hero-content" id="home"><p className="aksara">ꦥꦿꦤꦠꦕꦫ</p><p className="eyebrow">Atas rahmat Tuhan Yang Maha Esa</p><h2>Fuad <i>&amp;</i> Arma</h2><p className="lead">Dengan penuh rasa syukur, kami mengundang Anda untuk menjadi bagian dari hari bahagia kami.</p><a href="#acara" className="primary"><Icon name="calendar"/> Simpan Tanggal</a></div>
