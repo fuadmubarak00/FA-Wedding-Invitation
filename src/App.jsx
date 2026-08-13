@@ -110,11 +110,11 @@ export default function Home() {
       </div></section>
 
       <section className="gallery section-pad"><p className="eyebrow">Kenangan yang tersimpan</p><h3>Galeri Kami</h3><div className="photo-grid">
-        <div className="photo p1"><img src="/images/gallery/foto-1.JPG" alt="Kenangan Fuad dan Arma 1" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
-        <div className="photo p2"><img src="/images/gallery/foto-2.JPG" alt="Kenangan Fuad dan Arma 2" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
-        <div className="photo p3"><img src="/images/gallery/foto-3.JPG" alt="Kenangan Fuad dan Arma 3" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
-        <div className="photo p4"><img src="/images/gallery/foto-4.JPG" alt="Kenangan Fuad dan Arma 4" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
-        <div className="photo p5"><img src="/images/gallery/foto-5.JPG" alt="Kenangan Fuad dan Arma 5" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
+        <div className="photo p1"><img src="/images/gallery/foto-1.avif" alt="Kenangan Fuad dan Arma 1" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
+        <div className="photo p2"><img src="/images/gallery/foto-2.avif" alt="Kenangan Fuad dan Arma 2" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
+        <div className="photo p3"><img src="/images/gallery/foto-3.avif" alt="Kenangan Fuad dan Arma 3" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
+        <div className="photo p4"><img src="/images/gallery/foto-4.avif" alt="Kenangan Fuad dan Arma 4" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
+        <div className="photo p5"><img src="/images/gallery/foto-5.avif" alt="Kenangan Fuad dan Arma 5" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
       </div>
       {/* <p className="note">Tambahkan foto JPG Anda ke folder <code>public/images/gallery</code>. Foto dimuat saat pengunjung mendekati galeri.</p> */}
       </section>
