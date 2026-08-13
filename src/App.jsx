@@ -109,7 +109,15 @@ export default function Home() {
         <article><time>2027</time><div><h4>Menyatukan Dua Keluarga</h4><p>Kini kami menanti hari ketika kedua keluarga dipersatukan dalam doa, cinta, dan kebahagiaan yang akan kami kenang selamanya.</p></div></article>
       </div></section>
 
-      <section className="gallery section-pad"><p className="eyebrow">Kenangan yang tersimpan</p><h3>Galeri Kami</h3><div className="photo-grid"><div className="photo p1"><span>Jakarta</span></div><div className="photo p2"><span>Berdua</span></div><div className="photo p3"><span>Selamanya</span></div><div className="photo p4"><span>Satu Hati</span></div><div className="photo p5"><span>Menuju Bahagia</span></div></div><p className="note">Ganti area galeri dengan foto prewedding Anda di folder <code>public/images</code>.</p></section>
+      <section className="gallery section-pad"><p className="eyebrow">Kenangan yang tersimpan</p><h3>Galeri Kami</h3><div className="photo-grid">
+        <div className="photo p1"><img src="/images/gallery/foto-1.JPG" alt="Kenangan Fuad dan Arma 1" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
+        <div className="photo p2"><img src="/images/gallery/foto-2.JPG" alt="Kenangan Fuad dan Arma 2" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
+        <div className="photo p3"><img src="/images/gallery/foto-3.JPG" alt="Kenangan Fuad dan Arma 3" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
+        <div className="photo p4"><img src="/images/gallery/foto-4.JPG" alt="Kenangan Fuad dan Arma 4" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
+        <div className="photo p5"><img src="/images/gallery/foto-5.JPG" alt="Kenangan Fuad dan Arma 5" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
+      </div>
+      {/* <p className="note">Tambahkan foto JPG Anda ke folder <code>public/images/gallery</code>. Foto dimuat saat pengunjung mendekati galeri.</p> */}
+      </section>
 
       <section id="rsvp" className="rsvp section-pad"><div className="form-card"><p className="eyebrow">Konfirmasi kehadiran</p><h3>RSVP &amp; Ucapan</h3>{sent ? <div className="success"><span>✓</span><h4>Matur nuwun!</h4><p>Konfirmasi dan doa baik Anda telah kami terima.</p></div> : <form onSubmit={(e)=>{e.preventDefault();setSent(true)}}><label>Nama lengkap<input required placeholder="Tuliskan nama Anda"/></label><label>Konfirmasi kehadiran<select required defaultValue=""><option value="" disabled>Pilih jawaban</option><option>Ya, saya akan hadir</option><option>Maaf, saya tidak dapat hadir</option></select></label><label>Jumlah tamu<select><option>1 orang</option><option>2 orang</option></select></label><label>Ucapan &amp; doa<textarea required rows={4} placeholder="Tuliskan doa terbaik Anda..."/></label><button className="primary" type="submit">Kirim Konfirmasi</button></form>}</div></section>
 
