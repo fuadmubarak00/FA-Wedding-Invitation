@@ -31,6 +31,11 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    document.body.style.overflow = opened ? "" : "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, [opened]);
+
+  useEffect(() => {
     const tick = () => {
       const diff = Math.max(0, eventDate.getTime() - Date.now());
       setTime({ days: Math.floor(diff / 86400000), hours: Math.floor(diff / 3600000) % 24, minutes: Math.floor(diff / 60000) % 60, seconds: Math.floor(diff / 1000) % 60 });
@@ -40,6 +45,7 @@ export default function Home() {
 
   const copy = (value, label) => { navigator.clipboard?.writeText(value); setCopied(label); setTimeout(() => setCopied(""), 1800); };
   const openInvitation = () => {
+    window.scrollTo(0, 0);
     setOpened(true);
     musicRef.current?.play().then(() => setMusicPlaying(true)).catch(() => setMusicPlaying(false));
   };
