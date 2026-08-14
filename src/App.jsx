@@ -27,7 +27,10 @@ export default function Home() {
   const guestName = new URLSearchParams(window.location.search).get("to")?.trim() || "";
 
   useEffect(() => {
-    if (musicRef.current) musicRef.current.volume = 0.05;
+    if (musicRef.current) {
+      musicRef.current.volume = 0.05;
+      musicRef.current.play().then(() => setMusicPlaying(true)).catch(() => setMusicPlaying(false));
+    }
   }, []);
 
   useEffect(() => {
@@ -44,10 +47,13 @@ export default function Home() {
   }, []);
 
   const copy = (value, label) => { navigator.clipboard?.writeText(value); setCopied(label); setTimeout(() => setCopied(""), 1800); };
+  const startMusic = () => {
+    musicRef.current?.play().then(() => setMusicPlaying(true)).catch(() => setMusicPlaying(false));
+  };
   const openInvitation = () => {
     window.scrollTo(0, 0);
+    startMusic();
     setOpened(true);
-    musicRef.current?.play().then(() => setMusicPlaying(true)).catch(() => setMusicPlaying(false));
   };
   const toggleMusic = () => {
     if (musicRef.current?.paused) {
@@ -59,8 +65,8 @@ export default function Home() {
   };
 
   return <main>
-    <audio ref={musicRef} src="/audio/background.mp3" loop preload="auto" />
-    {!opened && <section className="cover">
+    <audio ref={musicRef} src="/audio/background.mp3" loop preload="auto" autoPlay />
+    {!opened && <section className="cover" onPointerDown={startMusic}>
       <div className="cover-inner">
         <p className="aksara">ꦲꦸꦤ꧀ꦢꦔꦤ꧀</p>
         <p className="eyebrow">The Wedding of</p>
@@ -92,7 +98,7 @@ export default function Home() {
       <section id="mempelai" className="couple section-pad"><p className="eyebrow">Dua insan, satu tujuan</p><h3>Mempelai</h3><div className="couple-grid">
         <article><div className="portrait male"><span>ꦄ</span></div><h4>Fuad Mubarak</h4><p>Putra pertama dari</p><strong>Bapak Hery Nugroho<br/>&amp;<br/>Ibu Rahmawati</strong><a href="#">@fuadmuubarak</a></article><br/>
         <div className="amp">&amp;</div><br/>
-        <article><div className="portrait female"><span>ꦥ</span></div><h4>Armaningtyas Utami</h4><p>Putri pertama dari</p><strong>Bapak Sunarto<br/>&amp;<br/>Ibu Feri Setia Sulistiana</strong><a href="#">@arma_tyas</a></article>
+        <article><div className="portrait female"><span>ꦥ</span></div><h4>Armaningtyas Utami</h4><p>Putri pertama dari</p><strong>Alm. Bapak Sunarto<br/>&amp;<br/>Ibu Feri Setia Sulistiana</strong><a href="#">@arma_tyas</a></article>
       </div></section>
 
       <section className="countdown section-pad"><p className="eyebrow">Menuju hari bahagia</p><h3>Waktu yang Dinanti</h3><div className="timer">{Object.entries(time).map(([k,v]) => <div key={k}><strong>{String(v).padStart(2,"0")}</strong><span>{{days:"Hari",hours:"Jam",minutes:"Menit",seconds:"Detik"}[k]}</span></div>)}</div></section>
