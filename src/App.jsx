@@ -2,6 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import "./App.css";
 
 const eventDate = new Date("2027-01-17T09:00:00+07:00");
+const galleryPhotos = [
+  { src: "/images/gallery/foto-1.avif", alt: "Kenangan Fuad dan Arma 1", className: "p1" },
+  { src: "/images/gallery/foto-2.avif", alt: "Kenangan Fuad dan Arma 2", className: "p2" },
+  { src: "/images/gallery/foto-3.avif", alt: "Kenangan Fuad dan Arma 3", className: "p3" },
+  { src: "/images/gallery/foto-4.avif", alt: "Kenangan Fuad dan Arma 4", className: "p4" },
+  { src: "/images/gallery/foto-5.avif", alt: "Kenangan Fuad dan Arma 5", className: "p5" },
+];
 
 const people = {
   f: {
@@ -41,6 +48,8 @@ function Icon({ name }) {
     gift: <><rect x="3" y="9" width="18" height="12" rx="1"/><path d="M12 9v12M2 9h20M7.5 9C4 9 4 4 7 4c2.5 0 5 5 5 5s2.5-5 5-5c3 0 3 5-.5 5"/></>,
     music: <><path d="M9 18V5l10-2v13M9 9l10-2"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></>,
     heart: <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/>,
+    close: <path d="m6 6 12 12M18 6 6 18"/>,
+    download: <><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></>,
   };
   return <svg viewBox="0 0 24 24" aria-hidden="true">{paths[name]}</svg>;
 }
@@ -64,6 +73,7 @@ export default function Home() {
   const [copied, setCopied] = useState("");
   const [sent, setSent] = useState(false);
   const [musicPlaying, setMusicPlaying] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
   const musicRef = useRef(null);
   const guestName = new URLSearchParams(window.location.search).get("to")?.trim() || "";
   const couple = getCoupleOrder();
@@ -77,9 +87,16 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = opened ? "" : "hidden";
+    document.body.style.overflow = opened && !selectedPhoto ? "" : "hidden";
     return () => { document.body.style.overflow = ""; };
-  }, [opened]);
+  }, [opened, selectedPhoto]);
+
+  useEffect(() => {
+    if (!selectedPhoto) return undefined;
+    const closeOnEscape = (event) => { if (event.key === "Escape") setSelectedPhoto(null); };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [selectedPhoto]);
 
   useEffect(() => {
     const tick = () => {
@@ -157,14 +174,18 @@ export default function Home() {
       </div></section>
 
       <section className="gallery section-pad"><p className="eyebrow">Kenangan yang tersimpan</p><h3>Galeri Kami</h3><div className="photo-grid">
-        <div className="photo p1"><img src="/images/gallery/foto-1.avif" alt="Kenangan Fuad dan Arma 1" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
-        <div className="photo p2"><img src="/images/gallery/foto-2.avif" alt="Kenangan Fuad dan Arma 2" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
-        <div className="photo p3"><img src="/images/gallery/foto-3.avif" alt="Kenangan Fuad dan Arma 3" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
-        <div className="photo p4"><img src="/images/gallery/foto-4.avif" alt="Kenangan Fuad dan Arma 4" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
-        <div className="photo p5"><img src="/images/gallery/foto-5.avif" alt="Kenangan Fuad dan Arma 5" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></div>
+        {galleryPhotos.map((photo) => <button key={photo.src} className={`photo ${photo.className}`} type="button" onClick={() => setSelectedPhoto(photo)} aria-label={`Lihat ${photo.alt}`}><img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></button>)}
       </div>
       {/* <p className="note">Tambahkan foto JPG Anda ke folder <code>public/images/gallery</code>. Foto dimuat saat pengunjung mendekati galeri.</p> */}
       </section>
+
+      {selectedPhoto && <div className="gallery-lightbox" role="dialog" aria-modal="true" aria-label={selectedPhoto.alt} onClick={() => setSelectedPhoto(null)}>
+        <div className="lightbox-content" onClick={(event) => event.stopPropagation()}>
+          <button className="lightbox-close" type="button" onClick={() => setSelectedPhoto(null)} aria-label="Tutup foto"><Icon name="close"/></button>
+          <img src={selectedPhoto.src} alt={selectedPhoto.alt}/>
+          <div className="lightbox-actions"><span>{selectedPhoto.alt}</span><a className="outline" href={selectedPhoto.src} download><Icon name="download"/> Unduh Foto</a></div>
+        </div>
+      </div>}
 
       <section id="rsvp" className="rsvp section-pad"><div className="form-card"><p className="eyebrow">Konfirmasi kehadiran</p><h3>RSVP &amp; Ucapan</h3>{sent ? <div className="success"><span>✓</span><h4>Matur nuwun!</h4><p>Konfirmasi dan doa baik Anda telah kami terima.</p></div> : <form onSubmit={(e)=>{e.preventDefault();setSent(true)}}><label>Nama lengkap<input required placeholder="Tuliskan nama Anda"/></label><label>Konfirmasi kehadiran<select required defaultValue=""><option value="" disabled>Pilih jawaban</option><option>Ya, saya akan hadir</option><option>Maaf, saya tidak dapat hadir</option></select></label><label>Jumlah tamu<select><option>1 orang</option><option>2 orang</option></select></label><label>Ucapan &amp; doa<textarea required rows={4} placeholder="Tuliskan doa terbaik Anda..."/></label><button className="primary" type="submit">Kirim Konfirmasi</button></form>}</div></section>
 
