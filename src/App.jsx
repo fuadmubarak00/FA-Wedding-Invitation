@@ -3,6 +3,36 @@ import "./App.css";
 
 const eventDate = new Date("2027-01-17T09:00:00+07:00");
 
+const people = {
+  f: {
+    shortName: "Fuad",
+    fullName: "Fuad Mubarak",
+    initial: "F",
+    portraitClass: "male",
+    portraitAksara: "ꦥ",
+    familyName: "Bapak Hery Nugroho",
+    parents: <>Bapak Hery Nugroho<br/>&amp;<br/>Ibu Rahmawati</>,
+    childDescription: "Putra pertama dari",
+    instagram: "@fuadmuubarak",
+  },
+  a: {
+    shortName: "Arma",
+    fullName: "Armaningtyas Utami",
+    initial: "A",
+    portraitClass: "female",
+    portraitAksara: "ꦄ",
+    familyName: "Alm. Bapak Sunarto",
+    parents: <>Alm. Bapak Sunarto<br/>&amp;<br/>Ibu Feri Setia Sulistiana</>,
+    childDescription: "Putri pertama dari",
+    instagram: "@arma_tyas",
+  },
+};
+
+function getCoupleOrder() {
+  const route = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
+  return route === "a" ? [people.a, people.f] : [people.f, people.a];
+}
+
 function Icon({ name }) {
   const paths = {
     mail: <><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></>,
@@ -15,7 +45,17 @@ function Icon({ name }) {
   return <svg viewBox="0 0 24 24" aria-hidden="true">{paths[name]}</svg>;
 }
 
-function Ornament() { return <div className="ornament"><span>ꦥ</span><i></i><span>ꦄ</span></div>; }
+function Ornament({ couple }) {
+  return <div className="ornament"><span>{couple[0].portraitAksara}</span><i></i><span>{couple[1].portraitAksara}</span></div>;
+}
+
+function CoupleNames({ couple }) {
+  return <>
+    <span>{couple[0].shortName}</span>
+    <em>&amp;</em>
+    <span>{couple[1].shortName}</span>
+  </>;
+}
 
 export default function Home() {
   const [opened, setOpened] = useState(false);
@@ -25,6 +65,8 @@ export default function Home() {
   const [musicPlaying, setMusicPlaying] = useState(false);
   const musicRef = useRef(null);
   const guestName = new URLSearchParams(window.location.search).get("to")?.trim() || "";
+  const couple = getCoupleOrder();
+  const [firstPerson, secondPerson] = couple;
 
   useEffect(() => {
     if (musicRef.current) {
@@ -71,11 +113,9 @@ export default function Home() {
         <p className="aksara">ꦲꦸꦤ꧀ꦢꦔꦤ꧀</p>
         <p className="eyebrow">The Wedding of</p>
         <h1 className="cover-names">
-          <span>Fuad</span>
-          <em>&amp;</em>
-          <span>Arma</span>
+          <CoupleNames couple={couple} />
         </h1>
-        <Ornament />
+        <Ornament couple={couple} />
         <p className="date">17 • 01 • 2027</p>
         <div className="guest"><small>Kepada Yth.</small><strong>{guestName || "Bapak/Ibu/Saudara/i"}</strong><span>di tempat</span></div>
         <button className="primary" onClick={openInvitation}><Icon name="mail"/> Buka Undangan</button>
@@ -88,17 +128,17 @@ export default function Home() {
         <span className="music-status">{musicPlaying ? "Musik aktif" : "Putar musik"}</span>
       </button>
       <header className="hero section-pad">
-        <nav><a href="#home" className="brand">A<span>&amp;</span>F</a><div><a href="#mempelai">Mempelai</a><a href="#acara">Acara</a><a href="#kisah">Kisah</a><a href="#rsvp">RSVP</a></div></nav>
-        <div className="hero-content" id="home"><p className="aksara">ꦥꦿꦤꦠꦕꦫ</p><p className="eyebrow">Atas rahmat Tuhan Yang Maha Esa</p><h2>Fuad <i>&amp;</i> Arma</h2><p className="lead">Dengan penuh rasa syukur, kami mengundang Anda untuk menjadi bagian dari hari bahagia kami.</p><a href="#acara" className="primary"><Icon name="calendar"/> Simpan Tanggal</a></div>
-        <div className="hero-frame"><div className="gunungan">♠</div><div className="silhouette"><span>A</span><b>&amp;</b><span>F</span></div></div>
+        <nav><a href="#home" className="brand">{firstPerson.initial}<span>&amp;</span>{secondPerson.initial}</a><div><a href="#mempelai">Mempelai</a><a href="#acara">Acara</a><a href="#kisah">Kisah</a><a href="#rsvp">RSVP</a></div></nav>
+        <div className="hero-content" id="home"><p className="aksara">ꦥꦿꦤꦠꦕꦫ</p><p className="eyebrow">Atas rahmat Tuhan Yang Maha Esa</p><h2><CoupleNames couple={couple} /></h2><p className="lead">Dengan penuh rasa syukur, kami mengundang Anda untuk menjadi bagian dari hari bahagia kami.</p><a href="#acara" className="primary"><Icon name="calendar"/> Simpan Tanggal</a></div>
+        <div className="hero-frame"><div className="gunungan">♠</div><div className="silhouette"><span>{firstPerson.initial}</span><b>&amp;</b><span>{secondPerson.initial}</span></div></div>
       </header>
 
-      <section className="quote section-pad"><Ornament/><blockquote>“Tresna iku dudu mung katon saka mripat, nanging uga saka ati.”</blockquote><p>Cinta bukan hanya terlihat dari mata, tetapi juga dirasakan dari hati.</p></section>
+      <section className="quote section-pad"><Ornament couple={couple}/><blockquote>“Tresna iku dudu mung katon saka mripat, nanging uga saka ati.”</blockquote><p>Cinta bukan hanya terlihat dari mata, tetapi juga dirasakan dari hati.</p></section>
 
       <section id="mempelai" className="couple section-pad"><p className="eyebrow">Dua insan, satu tujuan</p><h3>Mempelai</h3><div className="couple-grid">
-        <article><div className="portrait male"><span>ꦄ</span></div><h4>Fuad Mubarak</h4><p>Putra pertama dari</p><strong>Bapak Hery Nugroho<br/>&amp;<br/>Ibu Rahmawati</strong><a href="#">@fuadmuubarak</a></article><br/>
+        <article><div className={`portrait ${firstPerson.portraitClass}`}><span>{firstPerson.portraitAksara}</span></div><h4>{firstPerson.fullName}</h4><p>{firstPerson.childDescription}</p><strong>{firstPerson.parents}</strong><a href="#">{firstPerson.instagram}</a></article><br/>
         <div className="amp">&amp;</div><br/>
-        <article><div className="portrait female"><span>ꦥ</span></div><h4>Armaningtyas Utami</h4><p>Putri pertama dari</p><strong>Alm. Bapak Sunarto<br/>&amp;<br/>Ibu Feri Setia Sulistiana</strong><a href="#">@arma_tyas</a></article>
+        <article><div className={`portrait ${secondPerson.portraitClass}`}><span>{secondPerson.portraitAksara}</span></div><h4>{secondPerson.fullName}</h4><p>{secondPerson.childDescription}</p><strong>{secondPerson.parents}</strong><a href="#">{secondPerson.instagram}</a></article>
       </div></section>
 
       <section className="countdown section-pad"><p className="eyebrow">Menuju hari bahagia</p><h3>Waktu yang Dinanti</h3><div className="timer">{Object.entries(time).map(([k,v]) => <div key={k}><strong>{String(v).padStart(2,"0")}</strong><span>{{days:"Hari",hours:"Jam",minutes:"Menit",seconds:"Detik"}[k]}</span></div>)}</div></section>
@@ -129,7 +169,7 @@ export default function Home() {
 
       <section className="gift section-pad"><Icon name="gift"/><p className="eyebrow">Tanda kasih</p><h3>Wedding Gift</h3><p>Doa restu Anda merupakan hadiah terindah bagi kami. Namun jika ingin memberikan tanda kasih, dapat melalui:</p><div className="bank-grid"><div><small>Bank Central Asia</small><strong>1234 5678 9012</strong><span>a.n. Fuad Mubarak</span><button onClick={()=>copy("123456789012","BCA")}>{copied==="BCA"?"Tersalin ✓":"Salin Nomor"}</button></div><div><small>Bank Mandiri</small><strong>9876 5432 1098</strong><span>a.n. Armaningtyas Utami</span><button onClick={()=>copy("987654321098","Mandiri")}>{copied==="Mandiri"?"Tersalin ✓":"Salin Nomor"}</button></div></div></section>
 
-      <footer><p className="aksara">ꦩꦠꦸꦂꦤꦸꦮꦸꦤ꧀</p><h3>Matur Nuwun</h3><p>Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.</p><h2>Fuad <i>&amp;</i> Arma</h2><small>Keluarga Besar Bapak Hery Nugroho <br/>&amp;<br/>Keluarga Besar Bapak Sunarto</small></footer>
+      <footer><p className="aksara">ꦩꦠꦸꦂꦤꦸꦮꦸꦤ꧀</p><h3>Matur Nuwun</h3><p>Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.</p><h2><CoupleNames couple={couple} /></h2><small>Keluarga Besar {firstPerson.familyName} <br/>&amp;<br/>Keluarga Besar {secondPerson.familyName}</small></footer>
     </div>
   </main>;
 }
