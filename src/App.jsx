@@ -49,10 +49,11 @@ function Ornament({ couple }) {
   return <div className="ornament"><span>{couple[0].portraitAksara}</span><i></i><span>{couple[1].portraitAksara}</span></div>;
 }
 
-function CoupleNames({ couple }) {
+function CoupleNames({ couple, separator = "em" }) {
+  const Separator = separator;
   return <>
     <span>{couple[0].shortName}</span>
-    <em>&amp;</em>
+    <Separator>&amp;</Separator>
     <span>{couple[1].shortName}</span>
   </>;
 }
@@ -129,7 +130,7 @@ export default function Home() {
       </button>
       <header className="hero section-pad">
         <nav><a href="#home" className="brand">{firstPerson.initial}<span>&amp;</span>{secondPerson.initial}</a><div><a href="#mempelai">Mempelai</a><a href="#acara">Acara</a><a href="#kisah">Kisah</a><a href="#rsvp">RSVP</a></div></nav>
-        <div className="hero-content" id="home"><p className="aksara">ꦥꦿꦤꦠꦕꦫ</p><p className="eyebrow">Atas rahmat Tuhan Yang Maha Esa</p><h2><CoupleNames couple={couple} /></h2><p className="lead">Dengan penuh rasa syukur, kami mengundang Anda untuk menjadi bagian dari hari bahagia kami.</p><a href="#acara" className="primary"><Icon name="calendar"/> Simpan Tanggal</a></div>
+        <div className="hero-content" id="home"><p className="aksara">ꦥꦿꦤꦠꦕꦫ</p><p className="eyebrow">Atas rahmat Tuhan Yang Maha Esa</p><h2><CoupleNames couple={couple} separator="i" /></h2><p className="lead">Dengan penuh rasa syukur, kami mengundang Anda untuk menjadi bagian dari hari bahagia kami.</p><a href="#acara" className="primary"><Icon name="calendar"/> Simpan Tanggal</a></div>
         <div className="hero-frame"><div className="gunungan">♠</div><div className="silhouette"><span>{firstPerson.initial}</span><b>&amp;</b><span>{secondPerson.initial}</span></div></div>
       </header>
 
@@ -169,7 +170,7 @@ export default function Home() {
 
       <section className="gift section-pad"><Icon name="gift"/><p className="eyebrow">Tanda kasih</p><h3>Wedding Gift</h3><p>Doa restu Anda merupakan hadiah terindah bagi kami. Namun jika ingin memberikan tanda kasih, dapat melalui:</p><div className="bank-grid"><div><small>Bank Central Asia</small><strong>1234 5678 9012</strong><span>a.n. Fuad Mubarak</span><button onClick={()=>copy("123456789012","BCA")}>{copied==="BCA"?"Tersalin ✓":"Salin Nomor"}</button></div><div><small>Bank Mandiri</small><strong>9876 5432 1098</strong><span>a.n. Armaningtyas Utami</span><button onClick={()=>copy("987654321098","Mandiri")}>{copied==="Mandiri"?"Tersalin ✓":"Salin Nomor"}</button></div></div></section>
 
-      <footer><p className="aksara">ꦩꦠꦸꦂꦤꦸꦮꦸꦤ꧀</p><h3>Matur Nuwun</h3><p>Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.</p><h2><CoupleNames couple={couple} /></h2><small>Keluarga Besar {firstPerson.familyName} <br/>&amp;<br/>Keluarga Besar {secondPerson.familyName}</small></footer>
+      <footer><p className="aksara">ꦩꦠꦸꦂꦤꦸꦮꦸꦤ꧀</p><h3>Matur Nuwun</h3><p>Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.</p><h2><CoupleNames couple={couple} separator="i" /></h2><small>Keluarga Besar {firstPerson.familyName} <br/>&amp;<br/>Keluarga Besar {secondPerson.familyName}</small></footer>
     </div>
   </main>;
 }
