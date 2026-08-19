@@ -27,6 +27,7 @@ const people = {
     fullName: "Fuad Mubarak",
     initial: "F",
     portraitClass: "male",
+    portraitSrc: "/images/gallery/original/cpp.jpg",
     portraitAksara: "ꦥ",
     familyName: "Bapak Hery Nugroho",
     parents: <>Bapak Hery Nugroho<br/>&amp;<br/>Ibu Rahmawati</>,
@@ -38,6 +39,7 @@ const people = {
     fullName: "Armaningtyas Utami",
     initial: "A",
     portraitClass: "female",
+    portraitSrc: "/images/gallery/original/cpw.jpg",
     portraitAksara: "ꦄ",
     familyName: "Alm. Bapak Sunarto",
     parents: <>Alm. Bapak Sunarto<br/>&amp;<br/>Ibu Feri Setia Sulistiana</>,
@@ -165,9 +167,9 @@ export default function Home() {
       <section className="quote section-pad"><Ornament couple={couple}/><blockquote>“Tresna iku dudu mung katon saka mripat, nanging uga saka ati.”</blockquote><p>Cinta bukan hanya terlihat dari mata, tetapi juga dirasakan dari hati.</p></section>
 
       <section id="mempelai" className="couple section-pad"><p className="eyebrow">Dua insan, satu tujuan</p><h3>Mempelai</h3><div className="couple-grid">
-        <article><div className={`portrait ${firstPerson.portraitClass}`}><span>{firstPerson.portraitAksara}</span></div><h4>{firstPerson.fullName}</h4><p>{firstPerson.childDescription}</p><strong>{firstPerson.parents}</strong><a href="#">{firstPerson.instagram}</a></article>
+        <article><div className={`portrait ${firstPerson.portraitClass}`}><img src={getGalleryViewUrl(firstPerson.portraitSrc, 800)} srcSet={getGallerySrcSet(firstPerson.portraitSrc)} sizes="(max-width: 750px) calc(100vw - 40px), 330px" width="4000" height="6000" alt={`Potret ${firstPerson.fullName}`} loading="lazy" decoding="async"/></div><h4>{firstPerson.fullName}</h4><p>{firstPerson.childDescription}</p><strong>{firstPerson.parents}</strong><a href="#">{firstPerson.instagram}</a></article>
         <div className="amp">&amp;</div>
-        <article><div className={`portrait ${secondPerson.portraitClass}`}><span>{secondPerson.portraitAksara}</span></div><h4>{secondPerson.fullName}</h4><p>{secondPerson.childDescription}</p><strong>{secondPerson.parents}</strong><a href="#">{secondPerson.instagram}</a></article>
+        <article><div className={`portrait ${secondPerson.portraitClass}`}><img src={getGalleryViewUrl(secondPerson.portraitSrc, 800)} srcSet={getGallerySrcSet(secondPerson.portraitSrc)} sizes="(max-width: 750px) calc(100vw - 40px), 330px" width="4000" height="6000" alt={`Potret ${secondPerson.fullName}`} loading="lazy" decoding="async"/></div><h4>{secondPerson.fullName}</h4><p>{secondPerson.childDescription}</p><strong>{secondPerson.parents}</strong><a href="#">{secondPerson.instagram}</a></article>
       </div></section>
 
       <section className="countdown section-pad"><p className="eyebrow">Menuju hari bahagia</p><h3>Waktu yang Dinanti</h3><div className="timer">{Object.entries(time).map(([k,v]) => <div key={k}><strong>{String(v).padStart(2,"0")}</strong><span>{{days:"Hari",hours:"Jam",minutes:"Menit",seconds:"Detik"}[k]}</span></div>)}</div></section>
