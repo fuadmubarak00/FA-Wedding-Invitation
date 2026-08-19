@@ -2,23 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import "./App.css";
 
 const eventDate = new Date("2027-01-17T09:00:00+07:00");
-const imageWidths = [400, 800, 1200];
 
-function getGalleryViewUrl(originalSrc, width) {
-  if (import.meta.env.DEV) return originalSrc;
-  return `/.netlify/images?url=${originalSrc}&w=${width}&fm=avif&q=75`;
-}
-
-function getGallerySrcSet(originalSrc) {
-  return imageWidths.map((width) => `${getGalleryViewUrl(originalSrc, width)} ${width}w`).join(", ");
-}
-
-const galleryPhotos = [
-  { originalSrc: "/images/gallery/original/foto-1.JPG", alt: "Kenangan Fuad dan Arma 1", className: "p1", sizes: "(max-width: 750px) calc(100vw - 40px), (max-width: 1100px) 45vw, 520px" },
-  { originalSrc: "/images/gallery/original/foto-2.JPG", alt: "Kenangan Fuad dan Arma 2", className: "p2", sizes: "(max-width: 750px) calc(50vw - 26px), (max-width: 1100px) 22vw, 280px" },
-  { originalSrc: "/images/gallery/original/foto-3.JPG", alt: "Kenangan Fuad dan Arma 3", className: "p3", sizes: "(max-width: 750px) calc(50vw - 26px), (max-width: 1100px) 22vw, 280px" },
-  { originalSrc: "/images/gallery/original/foto-4.JPG", alt: "Kenangan Fuad dan Arma 4", className: "p4", sizes: "(max-width: 750px) calc(50vw - 26px), (max-width: 1100px) 22vw, 280px" },
-  { originalSrc: "/images/gallery/original/foto-5.JPG", alt: "Kenangan Fuad dan Arma 5", className: "p5", sizes: "(max-width: 750px) calc(50vw - 26px), (max-width: 1100px) 22vw, 280px" },
+const galleryPhotosCompressed = [
+  { compressedSrc: "/images/gallery/foto-1.avif", originalSrc: "/images/gallery/original/foto-1.JPG", alt: "Kenangan Fuad dan Arma 1", className: "p1", sizes: "(max-width: 750px) calc(100vw - 40px), (max-width: 1100px) 45vw, 520px" },
+  { compressedSrc: "/images/gallery/foto-2.avif", originalSrc: "/images/gallery/original/foto-2.JPG", alt: "Kenangan Fuad dan Arma 2", className: "p2", sizes: "(max-width: 750px) calc(50vw - 26px), (max-width: 1100px) 22vw, 280px" },
+  { compressedSrc: "/images/gallery/foto-3.avif", originalSrc: "/images/gallery/original/foto-3.JPG", alt: "Kenangan Fuad dan Arma 3", className: "p3", sizes: "(max-width: 750px) calc(50vw - 26px), (max-width: 1100px) 22vw, 280px" },
+  { compressedSrc: "/images/gallery/foto-4.avif", originalSrc: "/images/gallery/original/foto-4.JPG", alt: "Kenangan Fuad dan Arma 4", className: "p4", sizes: "(max-width: 750px) calc(50vw - 26px), (max-width: 1100px) 22vw, 280px" },
+  { compressedSrc: "/images/gallery/foto-5.avif", originalSrc: "/images/gallery/original/foto-5.JPG", alt: "Kenangan Fuad dan Arma 5", className: "p5", sizes: "(max-width: 750px) calc(50vw - 26px), (max-width: 1100px) 22vw, 280px" },
 ];
 
 const people = {
@@ -185,7 +175,7 @@ export default function Home() {
       </div></section>
 
       <section className="gallery section-pad"><p className="eyebrow">Kenangan yang tersimpan</p><h3>Galeri Kami</h3><div className="photo-grid">
-        {galleryPhotos.map((photo) => <button key={photo.originalSrc} className={`photo ${photo.className}`} type="button" onClick={() => setSelectedPhoto(photo)} aria-label={`Lihat ${photo.alt}`}><img src={getGalleryViewUrl(photo.originalSrc, 800)} srcSet={getGallerySrcSet(photo.originalSrc)} sizes={photo.sizes} width="6000" height="4000" alt={photo.alt} loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></button>)}
+        {galleryPhotosCompressed.map((photo) => <button key={photo.compressedSrc} className={`photo ${photo.className}`} type="button" onClick={() => setSelectedPhoto(photo)} aria-label={`Lihat ${photo.alt}`}><img src={photo.compressedSrc} sizes={photo.sizes} width="6000" height="4000" alt={photo.alt} loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.display = "none"; }}/><span></span></button>)}
       </div>
       {/* <p className="note">Tambahkan foto JPG Anda ke folder <code>public/images/gallery</code>. Foto dimuat saat pengunjung mendekati galeri.</p> */}
       </section>
@@ -193,7 +183,7 @@ export default function Home() {
       {selectedPhoto && <div className="gallery-lightbox" role="dialog" aria-modal="true" aria-label={selectedPhoto.alt} onClick={() => setSelectedPhoto(null)}>
         <div className="lightbox-content" onClick={(event) => event.stopPropagation()}>
           <button className="lightbox-close" type="button" onClick={() => setSelectedPhoto(null)} aria-label="Tutup foto"><Icon name="close"/></button>
-          <img src={getGalleryViewUrl(selectedPhoto.originalSrc, 1200)} srcSet={getGallerySrcSet(selectedPhoto.originalSrc)} sizes="(max-width: 750px) calc(100vw - 48px), 1000px" width="6000" height="4000" alt={selectedPhoto.alt}/>
+          <img src={selectedPhoto.compressedSrc} width="6000" height="4000" alt={selectedPhoto.alt}/>
           <div className="lightbox-actions"><span>{selectedPhoto.alt}</span><a className="outline" href={selectedPhoto.originalSrc} download><Icon name="download"/> Unduh Foto HD</a></div>
         </div>
       </div>}
